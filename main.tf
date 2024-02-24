@@ -1,9 +1,10 @@
-terraform {
-  cloud {
-    organization = "group4dbda"
+terraform{
+      cloud {
+    organization = "group4dbda1"
 
     workspaces {
-      name = "group4dbda"
+      name = "group4dbda1"
     }
   }
 } 
+
