@@ -1,7 +1,6 @@
 # provider
 provider "aws" {
     region = "us-east-1"
-    token = "FwoGZXIvYXdzEN7//////////wEaDGjsSuMpLhzJEMb1xSLJAfAgStYjYT49VzbNeRgmqszOFG3dObEh3okj4AED9v7YPo9xk1JulLSNIc/OsNc73kmEiWrs9DIyKI25CRhVbjt3a0kddGev7UXAJNsX4MlydUD/9QxhmZSytZESzrtn+k8gX3TuCfUdeJNTW0nLqOQOkKyQD3VjkqEO0jNbL3c8A/im5YYPjcvjj00pztk9v3IOYIpqKwBGYyoM0eTwBgKW8kmwVoVSZ7Nft/vuUdBfkf6pZcyCkPAApe2TjTLO8QGQURo1562LDSiPovCuBjIt3omTt/p8SkTbIoXUU8o+3R8CMWjg9vYKa4AML0HRqhP2Q6oRv7JNBxXzsWMx"
 
   }
 
