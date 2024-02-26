@@ -72,7 +72,7 @@ jobs:
       - name: Start Step Function Execution
         if: ${{ steps.apply.outputs.status == 'success' }}
         run: |
-           aws stepfunctions start-execution --state-machine-arn "arn:aws:states:us-east-1:126751535369:stateMachine:group4stepfunction"
+             aws stepfunctions start -execution --state-machine-arn "arn:aws:states:us-east-1:126751535369:stateMachine:group4stepfunction"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
