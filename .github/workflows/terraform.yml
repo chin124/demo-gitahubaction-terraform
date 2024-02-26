@@ -1,0 +1,78 @@
+name: Terraform AWS Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform-action:
+    name: Terraform
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials from AWS account
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set aws_default_region ${{ secrets.AWS_DEFAULT_REGION }}
+          aws configure set aws_session_token ${{ secrets.AWS_SESSION_TOKEN }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION}}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Initialize Terraform
+        working-directory: '.'
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Plan Infrastructure Changes
+        working-directory: '.'
+        run: terraform plan -no-color
+
+      - name: Apply Infrastructure Changes
+        id: apply
+        working-directory: '.'
+
+        run: |
+          terraform apply -auto-approve
+          echo "::set-output name=status::success"
+
+      - name: Wait for 5 seconds
+        if: ${{ always() }}
+        run: sleep 5
+
+      - name: Debug Output
+        if: ${{ always() }}
+        run: |
+          echo "Terraform Apply Status: ${{ steps.apply.outputs.status }}"
+          echo "Step Function execution condition: ${{ steps.apply.outputs.status == 'success' }}"
+
+      - name: Start Step Function Execution
+        if: ${{ steps.apply.outputs.status == 'success' }}
+        run: |
+          aws stepfunctions start-execution --state-machine-arn "arn:aws:states:us-east-1:126751535369:stateMachine:group4stepfunction"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}clear
+          
