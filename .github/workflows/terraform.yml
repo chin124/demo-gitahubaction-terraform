@@ -10,6 +10,13 @@ jobs:
     name: Terraform
     runs-on: ubuntu-latest
     
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION}}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
     steps:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -18,21 +25,13 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v2
-    
 
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION}}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-      
       - name: Debug Output
         run: |
-            echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
-            echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-            echo "AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}"
-            echo "AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}"
-        
+            echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+            echo "AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
+            echo "AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION"
+            echo "AWS_SESSION_TOKEN: $AWS_SESSION_TOKEN"
 
       - name: Terraform fmt
         id: fmt
@@ -73,9 +72,3 @@ jobs:
         if: ${{ steps.apply.outputs.status == 'success' }}
         run: |
            aws stepfunctions start-execution --state-machine-arn "arn:aws:states:us-east-1:126751535369:stateMachine:group4stepfunction"
-
-        env:
-          AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION:    ${{ secrets.AWS_DEFAULT_REGION }}
-          AWS_SESSION_TOKEN:     ${{ secrets.AWS_SESSION_TOKEN }}
