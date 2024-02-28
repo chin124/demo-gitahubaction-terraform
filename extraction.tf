@@ -1,10 +1,6 @@
 # provider
 provider "aws" {
     region = "us-east-1"
-    access_key = "ASIAR3AX26EESGZSLFOQ"
-    secret_key = "c01ajLpje/yr3m41EjZYn4if5UjJ1/r4rBmeF+GJ"
-    token = "FwoGZXIvYXdzEPn//////////wEaDNL8VwwUm/My9/p6PyLJAYIBtJjXz5RjAToz+qf4RWBJx3WZwt+XaLmkPwMhd7I7hvi75Vtb63JEw5PEnXWFVJ4gy8009hH1vy/yBM9avw9Jei0lFRhDjyEELS31CxMZvbQYIFuteWtzswc6JxoDWNovWP3zy0Z1gE15roGiIqS4ZENFxJVKGTzI7F5A5TJzGcEwkIQJSvQR0dwd5lW1ObUvX9TFKCx13M/GGtp16F2bRhwN857ePyE65FKa/wmZIOT1f7wdU7YTmD4uIyo9Q5Q/OqMWNIHECSjHn/auBjItHManULx5FW9jyjyw8EaI8cqeT/frlj5pvmc+isViUoCmOxVdb9K5Z3gCMtDd"
-
   }
 
 # generate randomised names
